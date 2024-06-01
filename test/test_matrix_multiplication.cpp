@@ -97,9 +97,8 @@ TEST(MatrixMultiplicationTest, TestMultiplyIdentity1) {
     multiplyMatrices(A, B, C, 2,3,3);
 
     std::vector<std::vector<int>> expected = {
-        {1, 0, 0},
-        {0, 1, 0},
-        {0, 0, 1}
+        {1, 1, 1},
+        {4, 5, 4}
     };
 
     ASSERT_EQ(C, expected) << "Matrix multiplication test failed! :(((()";
@@ -178,16 +177,23 @@ TEST(MatrixMultiplicationTest, NullProduct){
         {4, -2, 38, 1},
         {56, 1, 2, 90}
     };
-    std::vector<std::vector<int>> NMatrix = {
+    std::vector<std::vector<int>> B = {
         {0, 0, 0, 0},
         {0, 0, 0, 0},
         {0, 0, 0, 0},
         {0, 0, 0, 0}
     };
-    std::vector<std::vector<int>> B(4, std::vector<int>(4,0));
-    multiplyMatrices(A, NMatrix, B, 3, 4, 4);
+    std::vector<std::vector<int>> C(4, std::vector<int>(4,0));
+    multiplyMatrices(A, B, C, 3, 4, 4);
 
-    ASSERT_EQ(B, NMatrix) << "Matrix multiplication test failed! :(((()";
+    std::vector<std::vector<int>> expected = {
+        {0, 0, 0, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0},
+        {0, 0, 0, 0}
+    };
+
+    ASSERT_EQ(C, expected) << "Matrix multiplication test failed! :(((()";
 }
 
 
@@ -269,6 +275,83 @@ TEST(MatrixMultiplicationTest, TransposeOfProduct){
 
     C = transposeMatrix(R1, 4, 4);
     ASSERT_EQ(C, expected) << "Matrix multiplication test failed! :(((()";
+}
+
+/**
+* idempotentM
+* 
+* This test is used in order to understand whether, given an idempotent matrix A, 
+* the property A*A=A is respected.
+*
+* Cases of errors found:
+* Error 3: Matrix A contains a negative number!
+* Error 5: Matrix B contains a negative number!
+* Error 7: Result matrix contains a number between 11 and 20!
+* Error 12: The number of rows in A is equal to the number of columns in B!
+* Error 13: The first element of matrix A is equal to the first element of matrix B!
+* Error 14: The result matrix C has an even number of rows!
+* Error 18: Matrix A is a square matrix!
+*
+*/
+
+TEST(MatrixMultiplicationTest, idempotentM){
+    std::vector<std::vector<int>> A = {
+        {2, -2},
+        {1, -1}
+    };
+    std::vector<std::vector<int>> B = {
+        {2, -2},
+        {1, -1}
+    };
+    std::vector<std::vector<int>> C(2, std::vector<int>(2, 0));
+    std::vector<std::vector<int>> expected = {
+        {2, -2},
+        {1, -1}
+    };
+
+    multiplyMatrices(A,B,C,2,2,2);
+    ASSERT_EQ(C,expected) << "Matrix multiplication test failed! :(((()";
+
+}
+
+
+/**
+* OrthogonalMatrix
+* This test checks if an orthogonal matrix A respects the property : A*A' = I
+*
+* Cases of errors found:
+* Error 1: Element-wise multiplication of ones detected!
+* Error 3: Matrix A contains a negative number!
+* Error 5: Matrix B contains a negative number!
+* Error 7: Result matrix contains a number between 11 and 20!
+* Error 8: Result matrix contains zero!
+* Error 11: Every row in matrix B contains at least one '0'!
+* Error 12: The number of rows in A is equal to the number of columns in B!
+* Error 13: The first element of matrix A is equal to the first element of matrix B!
+* Error 18: Matrix A is a square matrix!
+* Error 20: Number of columns in matrix A is odd!
+* 
+*/
+
+TEST(MatrixMultiplicationTest, OrthogonalMatrix){
+    std::vector<std::vector<int>> A = {
+        {1, 0, 0},
+        {0, 0, -1},
+        {0, 1, 0}
+    };
+    std::vector<std::vector<int>> B(3, std::vector<int>(3, 0));
+    B = transposeMatrix(A,3,3);
+    std::vector<std::vector<int>> C(3, std::vector<int>(3, 0));
+    std::vector<std::vector<int>> expected = {
+        {1, 0, 0},
+        {0, 1, 0},
+        {0, 0, 1}
+    };
+
+    multiplyMatrices(A, B, C, 3, 3, 3);
+    ASSERT_EQ(C, expected) << "Matrix multiplication test failed! :(((()";
+
+
 }
 
 
