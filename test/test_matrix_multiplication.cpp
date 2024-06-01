@@ -166,7 +166,6 @@ TEST(MatrixMultiplicationTest, TestMultiplyIdentity2) {
  * Error 3: Matrix A contains a negative number!
  * Error 8: Result matrix contains zero!
  * Error 11: Every row in matrix B contains at least one '0'!
- * Error 14: The result matrix C has an even number of rows!
  *
  **/
 
@@ -183,11 +182,10 @@ TEST(MatrixMultiplicationTest, NullProduct){
         {0, 0, 0, 0},
         {0, 0, 0, 0}
     };
-    std::vector<std::vector<int>> C(4, std::vector<int>(4,0));
+    std::vector<std::vector<int>> C(3, std::vector<int>(4,0));
     multiplyMatrices(A, B, C, 3, 4, 4);
 
     std::vector<std::vector<int>> expected = {
-        {0, 0, 0, 0},
         {0, 0, 0, 0},
         {0, 0, 0, 0},
         {0, 0, 0, 0}
@@ -349,6 +347,42 @@ TEST(MatrixMultiplicationTest, OrthogonalMatrix){
     };
 
     multiplyMatrices(A, B, C, 3, 3, 3);
+    ASSERT_EQ(C, expected) << "Matrix multiplication test failed! :(((()";
+
+
+}
+
+/**
+* TwoMatrixVectors
+* This test is done in order to verify whether or not the result matrix respects the correct dimensions
+*
+* Cases of errors found:
+* Error 1: Element-wise multiplication of ones detected!
+* Error 4: Matrix B contains the number 3!
+* Error 6: Result matrix contains a number bigger than 100!
+* Error 8: Result matrix contains zero!
+* Error 9: Result matrix contains the number 99!
+* Error 12: The number of rows in A is equal to the number of columns in B!
+* Error 13: The first element of matrix A is equal to the first element of matrix B!
+* Error 16: Matrix B contains the number 6!
+*
+*/
+TEST(MatrixMultiplicationTest, TwoMatrixVectors){
+    std::vector<std::vector<int>> A = {
+        {1, 2, 3, 4, 5, 6}
+    };
+    std::vector<std::vector<int>> B = {
+        {1},
+        {2},
+        {3},
+        {4},
+        {5},
+        {6}
+    };
+    std::vector<std::vector<int>> C(1, std::vector<int>(1, 0));
+    std::vector<std::vector<int>> expected(1, std::vector<int>(1, 75));
+
+    multiplyMatrices(A, B, C, 1, 6, 6);
     ASSERT_EQ(C, expected) << "Matrix multiplication test failed! :(((()";
 
 
